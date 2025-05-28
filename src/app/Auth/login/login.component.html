@@ -1,1 +1,86 @@
-<p>login works!</p>
+<div class="grid">
+  <!-- Left Image Column -->
+  <div class="col-12 md:col-6 p-4 flex justify-content-center align-items-center">
+    <img
+      src="https://www.bestpeers.com/static/images/service/inner/hr_portal_banner.png"
+      class="w-full md:w-10 h-auto"
+      alt="HR Portal Banner"
+    />
+  </div>
+
+  <!-- Right Login Form Column -->
+  <div class="col-12 md:col-6 flex align-items-center justify-content-center min-h-screen homebg p-4">
+    <div class="surface-card p-4 shadow-2 border-round w-full sm:w-30rem">
+      <div class="text-center mb-4">
+        <!-- <p-avatar
+          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYOgVxLPZQlTUfG5XDL-uaQqJ03S3XEMx4xg&s"
+          styleClass="mr-2"
+          size="xlarge"
+          shape="circle"
+        ></p-avatar> -->
+          <i class="pi pi-user text-4xl text-blue-500 mb-2"></i>
+        <h2 class="text-2xl font-semibold mt-2">HR PORTAL</h2>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label for="username" class="block text-900 mb-2">Username</label>
+          <input
+            id="username"
+            type="text"
+            pInputText
+            class="w-full"
+            formControlName="username"
+            placeholder="Enter your username"
+          />
+          <small
+            *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid"
+            class="text-red-500"
+          >
+            Username is required.
+          </small>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="block text-900 mb-2">Password</label>
+          <input
+            id="password"
+            type="password"
+            pPassword
+            class="w-full"
+            formControlName="password"
+            [feedback]="false"
+          />
+          <small
+            *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+            class="text-red-500"
+          >
+            Password is required.
+          </small>
+        </div>
+
+        <div class="flex justify-content-between align-items-center mb-3">
+          <div class="flex align-items-center">
+            <p-checkbox inputId="remember" binary="true" formControlName="rememberMe"></p-checkbox>
+            <label for="remember" class="ml-2">Remember me</label>
+          </div>
+          <a href="#" class="text-blue-500 text-sm">Forgot Password?</a>
+        </div>
+
+        <button
+          pButton
+          type="submit"
+          class="w-full text-xl font-bold gradient-button"
+          severity="info"
+        >
+          Login
+        </button>
+
+        <p class="text-center text-sm text-600 mt-4">
+          Unable to login? Kindly connect with
+          <a href="#" class="text-blue-500 font-medium">IT Support Team</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
