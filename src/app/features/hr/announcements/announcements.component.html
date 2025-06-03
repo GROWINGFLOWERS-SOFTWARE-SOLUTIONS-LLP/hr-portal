@@ -1,1 +1,89 @@
-<p>announcements works!</p>
+<div class="p-8 md:p-8">
+    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-3">
+        <h2 class="m-0">Announcements</h2>
+        <button pButton type="button" label="Create Announcement" icon="pi pi-megaphone" iconPos="left"
+            class="text-base font-medium" (click)="showDialog = true" severity="info">
+        </button>
+    </div>
+
+    <p-dialog header="Create Announcement" [(visible)]="showDialog" [modal]="true"
+        [style]="{width: '90vw', maxWidth: '500px'}" [closable]="true"
+        [breakpoints]="{'960px': '95vw', '640px': '100vw'}">
+        <div class="p-fluid">
+
+            <div class="field">
+                <label for="title">Title</label>
+                <input id="title" type="text" pInputText [(ngModel)]="announcement.title" class="w-full p-inputtext" />
+            </div>
+
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea pInputTextarea id="description" formControlName="description" rows="4"
+                    [(ngModel)]="announcement.description"
+                    class="text-base p-2 border-1 border-solid border-round w-full outline-none focus:border-primary"
+                    autoResize>
+      </textarea>
+            </div>
+
+            <!-- 📅 New Date Field -->
+            <div class="field flex flex-column">
+                <label for="date" class="mb-2">Date</label>
+                <p-calendar id="date" [(ngModel)]="announcement.date" dateFormat="yy-mm-dd" showIcon inputId="date"
+                    class="w-full" [style]="{ 'width': '100%' }" inputStyleClass="w-full" appendTo="body">
+                </p-calendar>
+            </div>
+
+            <div class="flex justify-end mt-3">
+                <button pButton type="button" label="Submit" class="p-button-success" (click)="submitAnnouncement()"
+                    severity="info"></button>
+            </div>
+
+        </div>
+    </p-dialog>
+
+    <!-- Announcement List -->
+    <div *ngFor="let item of announcements" class="mb-4">
+        <p-card class="shadow-2 border-round surface-card">
+            <ng-template pTemplate="content">
+                <div class="flex gap-3">
+                    <p-avatar [image]="item.avatar" shape="circle" size="large"></p-avatar>
+
+                    <div class="flex-1 w-full">
+                        <!-- <div class="font-semibold text-cyan-600 mb-1">{{ item.name }}</div> -->
+                        <div class="flex justify-between items-center text-sm text-color-secondary mt-2 w-full">
+                            <!-- Left: Date -->
+                            <div class="flex-1 text-left break-words font-semibold text-cyan-600 mb-1 text-lg">
+                                {{ item.name }}
+                            </div>
+
+                            <!-- Right: Edit & Delete buttons -->
+                            <div class="flex whitespace-nowrap text-right mb-2" style="gap: 1.5rem;">
+                                <!-- Edit Button -->
+                                <p-button icon="pi pi-pencil" severity="success" [outlined]="true"  class="custom-pbutton" />
+
+                                <!-- Delete Button -->
+                                <p-button icon="pi pi-trash" severity="danger" [outlined]="true" class="custom-pbutton" />
+                            </div>
+                        </div>
+
+                        <div class="text-sm mb-2">{{ item.message }}</div>
+
+                        <div class="flex justify-between items-center text-sm text-color-secondary mt-2 w-full">
+                            <!-- Left: Date -->
+                            <div class="flex-1 text-left break-words">
+                                {{ item.date | date: 'fullDate' }} at {{ item.time }}
+                            </div>
+
+                            <!-- Right: Comment & Like -->
+                            <div class="text-cyan-600 cursor-pointer whitespace-nowrap text-right">
+                                Comment · Like <span *ngIf="item.likes > 0">• {{ item.likes }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+
+
+</div>

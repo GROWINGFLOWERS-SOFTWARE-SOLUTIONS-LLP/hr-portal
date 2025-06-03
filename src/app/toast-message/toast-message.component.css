@@ -1,11 +1,3 @@
-.gradient-button {
-  background: linear-gradient(to right, #6a11cb, #2575fc); 
-  color: white !important;
-  border: none !important;
-}
-.gradient-button:hover {
-  background: linear-gradient(to right, #45cde5, #5f69f1);
-}
 
 /* Toast Message CSS */
 ::ng-deep .p-toast {
@@ -38,7 +30,3 @@
     font-size: 14px !important;
   }
 }
-
-
-
-
