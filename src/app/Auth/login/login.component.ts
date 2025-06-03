@@ -1,30 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CommonModule } from '@angular/common';
-import { AvatarModule } from 'primeng/avatar'; 
+import { AvatarModule } from 'primeng/avatar';
+
+import { ToastMessageComponent } from '../../toast-message/toast-message.component';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule,
+  imports: [
+    ButtonModule,
     InputTextModule,
     PasswordModule,
     CheckboxModule,
     ReactiveFormsModule,
-    CommonModule,AvatarModule],
+    CommonModule,
+    AvatarModule,
+    ToastMessageComponent
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
- title = 'hr-portal';
-
-  
+  title = 'hr-portal';
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  @ViewChild(ToastMessageComponent) toast!: ToastMessageComponent;
+
+  constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -34,20 +43,27 @@ export class LoginComponent {
 
   onLogin() {
     if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched(); // Show errors if any field is invalid
+      this.loginForm.markAllAsTouched();
       return;
     }
 
-    const { username, password, rememberMe } = this.loginForm.value;
+    const { username, password } = this.loginForm.value;
 
     if (username === 'user' && password === 'pass') {
-
-      console.log('Successfully logged in');
-      // console.log('Username:', username);
-      // console.log('Password:', password);
-      // console.log('Remember Me:', rememberMe);
+      this.showSuccess();
+      setTimeout(() => {
+        this.router.navigate(['/dashboard']);
+      }, 1000);
     } else {
-      console.log('Invalid username or password.');
+      this.showError();
     }
+  }
+
+  showSuccess() {
+    this.toast.showMessage('success', 'Login Successful', 'Welcome back!');
+  }
+
+  showError() {
+    this.toast.showMessage('error', 'Login Failed', 'Invalid username or password');
   }
 }

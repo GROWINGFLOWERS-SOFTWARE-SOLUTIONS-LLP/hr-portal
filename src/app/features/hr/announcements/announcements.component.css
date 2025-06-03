@@ -1,0 +1,5 @@
+::ng-deep p-button.custom-pbutton button {
+  width: 30px;
+  height: 30px;
+  padding: 0; /* optional, to control internal spacing */
+}
