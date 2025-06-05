@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './Auth/login/login.component';
 import { AnnouncementsComponent } from './features/hr/announcements/announcements.component';
 import { HelpPageComponent } from './help-page/help-page.component';
+import { DashboardComponent } from './features/hr/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'announcement',
     component: AnnouncementsComponent,
+  },
+   {
+    path: 'dashboard',
+    component: DashboardComponent,
   },
   {
     path: 'help',
