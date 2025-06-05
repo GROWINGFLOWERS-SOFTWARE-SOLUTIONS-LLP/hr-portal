@@ -1,0 +1,76 @@
+<div class="header">Help Desk - Employee Support</div>
+
+<div class="ticket-board">
+  <!-- Open Column -->
+  <div class="column" pDroppable="true" (onDrop)="onDrop($event, 'Open')">
+    <h2>Open</h2>
+    <div
+      *ngFor="
+        let ticket of getTicketsByStatus('Open');
+        trackBy: trackByTicketId
+      "
+      class="ticket-card"
+      pDraggable="true"
+      dragData="ticket"
+    >
+      <div class="ticket-title">{{ ticket.title }}</div>
+      <div class="ticket-meta">Employee: {{ ticket.employee }}</div>
+      <div class="ticket-meta">Created: {{ ticket.createdAt }}</div>
+      <div class="ticket-messages">
+        <div class="ticket-message" *ngFor="let msg of ticket.messages">
+          <strong>{{ msg.sender }}:</strong> {{ msg.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Progress Column -->
+  <div
+    class="column"
+    pDroppable="true"
+    (onDrop)="onDrop($event, 'In Progress')"
+  >
+    <h2>In Progress</h2>
+    <div
+      *ngFor="
+        let ticket of getTicketsByStatus('In Progress');
+        trackBy: trackByTicketId
+      "
+      class="ticket-card"
+      pDraggable="true"
+      dragData="ticket"
+    >
+      <div class="ticket-title">{{ ticket.title }}</div>
+      <div class="ticket-meta">Employee: {{ ticket.employee }}</div>
+      <div class="ticket-meta">Created: {{ ticket.createdAt }}</div>
+      <div class="ticket-messages">
+        <div class="ticket-message" *ngFor="let msg of ticket.messages">
+          <strong>{{ msg.sender }}:</strong> {{ msg.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resolved Column -->
+  <div class="column" pDroppable="true" (onDrop)="onDrop($event, 'Resolved')">
+    <h2>Resolved</h2>
+    <div
+      *ngFor="
+        let ticket of getTicketsByStatus('Resolved');
+        trackBy: trackByTicketId
+      "
+      class="ticket-card"
+      pDraggable="true"
+      dragData="ticket"
+    >
+      <div class="ticket-title">{{ ticket.title }}</div>
+      <div class="ticket-meta">Employee: {{ ticket.employee }}</div>
+      <div class="ticket-meta">Created: {{ ticket.createdAt }}</div>
+      <div class="ticket-messages">
+        <div class="ticket-message" *ngFor="let msg of ticket.messages">
+          <strong>{{ msg.sender }}:</strong> {{ msg.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
