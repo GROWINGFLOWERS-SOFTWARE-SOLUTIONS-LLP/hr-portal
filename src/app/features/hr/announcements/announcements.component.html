@@ -46,30 +46,30 @@
         <p-card class="shadow-2 border-round surface-card">
             <ng-template pTemplate="content">
                 <div class="flex gap-3">
-                  <p-avatar 
-  [image]="item.avatar" 
-  shape="circle" 
-  [ngClass]="{
-    'w-2rem h-2rem': true,       
-    'md:w-3rem md:h-3rem': true,  
-    'lg:w-4rem lg:h-4rem': true   
-  }">
-</p-avatar>
+                    <p-avatar [image]="item.avatar" shape="circle" [ngClass]="{
+                            'w-2rem h-2rem': true,       
+                             'md:w-3rem md:h-3rem': true,  
+                             'lg:w-4rem lg:h-4rem': true   
+                             }">
+                    </p-avatar>
 
                     <div class="flex-1 w-full">
                         <!-- <div class="font-semibold text-cyan-600 mb-1">{{ item.name }}</div> -->
-                        <div class="flex flex-wrap justify-between items-center text-sm text-color-secondary mt-2 w-full gap-3">
-  <!-- Left: Item Name -->
-  <div class="flex-1 text-left font-semibold text-cyan-600 text-lg min-w-[150px]">
-    {{ item.name }}
-  </div>
+                        <div
+                            class="flex flex-wrap justify-between items-center text-sm text-color-secondary mt-2 w-full gap-3">
+                            <!-- Left: Item Name -->
+                            <div class="flex-1 text-left font-semibold text-cyan-600 text-lg min-w-[150px]">
+                                {{ item.name }}
+                            </div>
 
-  <!-- Right: Buttons -->
-  <div class="flex gap-3 text-right">
-    <p-button icon="pi pi-pencil" severity="success" [outlined]="true" class="p-0 custom-pbutton" styleClass="p-button-sm" />
-    <p-button icon="pi pi-trash" severity="danger" [outlined]="true" class="p-0 custom-pbutton" styleClass="p-button-sm" />
-  </div>
-</div>
+                            <!-- Right: Buttons -->
+                            <div class="flex gap-3 text-right">
+                                <p-button type="button" icon="pi pi-pencil" severity="success" [outlined]="true"
+                                    class="p-0 custom-pbutton" styleClass="p-button-sm" />
+                                <p-button type="button" icon="pi pi-trash" severity="danger" [outlined]="true"
+                                    class="p-0 custom-pbutton" styleClass="p-button-sm" />
+                            </div>
+                        </div>
 
                         <div class="text-sm mb-2">{{ item.message }}</div>
 
