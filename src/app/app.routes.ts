@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './Auth/login/login.component';
 import { AnnouncementsComponent } from './features/hr/announcements/announcements.component';
 import { HelpPageComponent } from './help-page/help-page.component';
+import { LettersComponent } from './features/hr/letters/letters.component';
 
 export const routes: Routes = [
   {
@@ -26,4 +27,8 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/hr/hr.module').then((m) => m.HrModule),
   },
+  {
+    path: 'letters',
+    component: LettersComponent,
+  }
 ];
