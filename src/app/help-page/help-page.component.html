@@ -2,16 +2,16 @@
 
 <div class="ticket-board">
   <!-- Open Column -->
-  <div class="column" pDroppable="true" (onDrop)="onDrop($event, 'Open')">
+  <div class="column" pDroppable="ticket" (onDrop)="onDrop($event, 'Open')">
     <h2>Open</h2>
     <div
+      pDraggable="ticket"
+      (onDragStart)="onDragStart(ticket)"
       *ngFor="
         let ticket of getTicketsByStatus('Open');
         trackBy: trackByTicketId
       "
       class="ticket-card"
-      pDraggable="true"
-      dragData="ticket"
     >
       <div class="ticket-title">{{ ticket.title }}</div>
       <div class="ticket-meta">Employee: {{ ticket.employee }}</div>
@@ -27,18 +27,18 @@
   <!-- In Progress Column -->
   <div
     class="column"
-    pDroppable="true"
+    pDroppable="ticket"
     (onDrop)="onDrop($event, 'In Progress')"
   >
     <h2>In Progress</h2>
     <div
+      pDraggable="ticket"
+      (onDragStart)="onDragStart(ticket)"
       *ngFor="
         let ticket of getTicketsByStatus('In Progress');
         trackBy: trackByTicketId
       "
       class="ticket-card"
-      pDraggable="true"
-      dragData="ticket"
     >
       <div class="ticket-title">{{ ticket.title }}</div>
       <div class="ticket-meta">Employee: {{ ticket.employee }}</div>
@@ -52,16 +52,16 @@
   </div>
 
   <!-- Resolved Column -->
-  <div class="column" pDroppable="true" (onDrop)="onDrop($event, 'Resolved')">
+  <div class="column" pDroppable="ticket" (onDrop)="onDrop($event, 'Resolved')">
     <h2>Resolved</h2>
     <div
+      pDraggable="ticket"
+      (onDragStart)="onDragStart(ticket)"
       *ngFor="
         let ticket of getTicketsByStatus('Resolved');
         trackBy: trackByTicketId
       "
       class="ticket-card"
-      pDraggable="true"
-      dragData="ticket"
     >
       <div class="ticket-title">{{ ticket.title }}</div>
       <div class="ticket-meta">Employee: {{ ticket.employee }}</div>

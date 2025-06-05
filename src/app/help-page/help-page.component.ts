@@ -252,11 +252,21 @@ export class HelpPageComponent {
     return this.tickets.filter((t) => t.status === status);
   }
 
-  onDrop(event: any, status: 'Open' | 'In Progress' | 'Resolved') {
-    const draggedTicket: Ticket = event.dragData;
-    const index = this.tickets.findIndex((t) => t.id === draggedTicket.id);
-    if (index !== -1) {
-      this.tickets[index].status = status;
+  draggedTicket!: Ticket;
+
+  onDragStart(ticket: Ticket) {
+    this.draggedTicket = ticket;
+  }
+
+  onDrop(event: any, newStatus: 'Open' | 'In Progress' | 'Resolved') {
+    if (this.draggedTicket) {
+      const index = this.tickets.findIndex(
+        (t) => t.id === this.draggedTicket.id
+      );
+      if (index !== -1) {
+        this.tickets[index].status = newStatus;
+      }
+      this.draggedTicket = undefined!;
     }
   }
 
