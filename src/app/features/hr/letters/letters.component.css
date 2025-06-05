@@ -1,0 +1,57 @@
+.p-datatable-responsive {
+    overflow-x: auto;
+}
+
+@media screen and (max-width: 767px) {
+
+    .p-datatable th,
+    .p-datatable td {
+        display: block;
+        width: 100%;
+    }
+
+    .p-datatable td {
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    .p-datatable td:before {
+
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 5px;
+        font-weight: bold;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .p-datatable td {
+        display: table-cell;
+        padding-left: 10px;
+    }
+}
+
+.p-button+.p-button {
+    margin-left: 0.5rem;
+}
+
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+}
+
+.edit-icon {
+    color: #007bff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.delete-icon {
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
