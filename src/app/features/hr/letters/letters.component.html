@@ -1,1 +1,64 @@
-<p>letters works!</p>
+<div class="p-6">
+  <button class="bg-purple-600 text-white px-4 py-2 mb-4 rounded" (click)="toggleView()">
+    {{ showForm ? 'Show All Letters' : 'Upload New Letter' }}
+  </button>
+
+  <div *ngIf="showForm" class="bg-white shadow p-6 rounded space-y-4">
+    <div>
+      <label class="block font-semibold mb-1">Employee Name</label>
+      <input type="text" [(ngModel)]="newEmpName"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+        placeholder="Enter Employee Name" />
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1 w-full">Type of Letter</label>
+      <p-dropdown [options]="letterTypes" [(ngModel)]="selectedLetter" placeholder="Select Letter Type"
+        styleClass="w-full" [style]="{width: '100%'}">
+      </p-dropdown>
+    </div>
+
+    <div>
+      <label class="block font-semibold mb-1">Upload File</label>
+      <input type="file" (change)="onFileSelect($event)"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+      <p *ngIf="fileName" class="text-sm text-gray-600 mt-1">Selected: {{ fileName }}</p>
+    </div>
+
+    <button class="bg-green-500 text-white px-4 py-2 rounded" (click)="uploadDocument()">
+      {{ isEditMode ? 'Update Letter' : 'Upload Letter' }}
+    </button>
+  </div>
+
+  <div *ngIf="!showForm" class="bg-white shadow p-6 rounded mt-4">
+    <p-table [value]="letters" [responsive]="true" class="p-datatable-responsive">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Sr No</th>
+          <th>Employee Name</th>
+          <th>Letter Type</th>
+          <th>File Name</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-letter let-i="rowIndex">
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ letter.empName }}</td>
+          <td>{{ letter.type }}</td>
+          <td>
+            <button class="text-blue-500" (click)="viewFile(letter)">
+              <i class="pi pi-eye"></i> {{ letter.fileName }}
+            </button>
+          </td>
+          <td>
+            <div class="flex justify-center gap-4">
+              <i class="pi pi-pencil text-blue-500 cursor-pointer text-lg" title="Edit" (click)="editLetter(i)"></i>
+              <i class="pi pi-trash text-red-500 cursor-pointer text-lg" title="Delete" (click)="deleteLetter(i)"></i>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
