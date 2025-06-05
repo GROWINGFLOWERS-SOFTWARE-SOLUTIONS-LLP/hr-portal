@@ -45,6 +45,7 @@ export class AnnouncementsComponent {
       date: null
     };
   }
+  
   announcements = [
     {
       name: 'Mar Rueda',
