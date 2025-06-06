@@ -1,0 +1,91 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 0 1rem;
+  height: 60px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-btn {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.navbar-left .title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-center input {
+  width: 300px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon-spacing {
+  font-size: 1rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.portal-container {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #f7f9fa;
+  border-right: 1px solid #ddd;
+  padding: 1rem 0;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list li {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.menu-list li i {
+  margin-right: 0.75rem;
+}
+
+.menu-list li:hover {
+  background-color: #e0e0e0;
+}
+
+.menu-list li.active {
+  background-color: #007ad9;
+  color: white;
+}

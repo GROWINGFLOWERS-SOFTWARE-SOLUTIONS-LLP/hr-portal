@@ -4,6 +4,7 @@ import { AnnouncementsComponent } from './features/hr/announcements/announcement
 import { HelpPageComponent } from './help-page/help-page.component';
 import { DashboardComponent } from './features/hr/dashboard/dashboard.component';
 import { LettersComponent } from './features/hr/letters/letters.component';
+import { NavbarComponent } from './Layout/navbar/navbar.component';
 
 export const routes: Routes = [
   {
@@ -16,13 +17,18 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'announcement',
-    component: AnnouncementsComponent,
-  },
-   {
     path: 'dashboard',
     component: DashboardComponent,
   },
+  {
+    path: 'navbar',
+    component: NavbarComponent,
+  },
+  {
+    path: 'announcement',
+    component: AnnouncementsComponent,
+  },
+   
   {
     path: 'help',
     component: HelpPageComponent,
