@@ -1,17 +1,67 @@
+<!-- Top Status Cards -->
 <div class="content-area card-grid">
-  <p-card header="Registered" class="dashboard-card recruiter"><p>12</p></p-card>
-  <p-card header="Mapped" class="dashboard-card interviewed"><p>9</p></p-card>
-  <p-card header="Interviewed" class="dashboard-card rejected"><p>2</p></p-card>
-  <p-card header="Hold" class="dashboard-card hold"><p>1</p></p-card>
-  <p-card header="Offer Letter" class="dashboard-card offer"><p>5</p></p-card>
+  <p-card header="Registered" class="dashboard-card recruiter">
+    <p>12</p>
+  </p-card>
+
+  <p-card header="Interviewed" class="dashboard-card interviewed">
+    <p>2</p>
+  </p-card>
+
+  <p-card header="Hold" class="dashboard-card hold">
+    <p>1</p>
+  </p-card>
+
+  <p-card header="Selected" class="dashboard-card Selected">
+    <p>5</p>
+  </p-card>
+
+  <p-card header="Joined" class="dashboard-card Joined">
+    <p>2</p>
+  </p-card>
+
+
 </div>
 
-<div class="charts-container">
-  <p-card header="Hiring Distribution (Pie)">
-    <p-chart type="pie" [data]="pieChartData" [options]="pieOptions" styleClass="custom-chart"></p-chart>
-  </p-card>
+<!-- Bottom Section -->
+<div class="dashboard-bottom">
+  <!-- Left Side -->
+  <div class="left-section">
+    <p-card header="Upcoming Holidays" class="section-card holiday-card">
+      <ul>
+        <li>Independence Day - Aug 15</li>
+        <li>Janashtami - Aug 16</li>
+        <li>Raksha Bandhan - Aug 19</li>
+        <li>Onam - Sep 5</li>
+        <li>Ganesh Chaturthi - Sep 7</li>
+        <li>Gandhi Jayanti - Oct 2</li>
+        <li>Diwali - Oct 21</li>
+        <li>Guru Nanak Jayanti - Nov 5</li>
+        <li>Christmas Day - Dec 25</li>
+      </ul>
+    </p-card>
 
-  <p-card header="Monthly Stats (Bar)">
-    <p-chart type="bar" [data]="barChartData" [options]="barOptions" styleClass="custom-chart"></p-chart>
-  </p-card>
+    <p-card header="Calendar" class="section-card calendar-toggle-card">
+      <div class="calendar-header">
+        <span>Click on the calendar icon</span>
+        <i class="pi pi-calendar calendar-icon" (click)="toggleCalendar()"></i>
+      </div>
+      <div *ngIf="showCalendar" class="calendar-container">
+        <p-calendar [(ngModel)]="selectedDate" inline="true"></p-calendar>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Right Side -->
+  <div class="charts-section">
+    <div class="chart-row">
+      <p-card header="Hiring Distribution (Pie)" class="section-card">
+        <p-chart type="pie" [data]="pieChartData" [options]="pieOptions" styleClass="custom-chart"></p-chart>
+      </p-card>
+
+      <p-card header="Monthly Stats (Bar)" class="section-card">
+        <p-chart type="bar" [data]="barChartData" [options]="barOptions" styleClass="custom-chart"></p-chart>
+      </p-card>
+    </div>
+  </div>
 </div>

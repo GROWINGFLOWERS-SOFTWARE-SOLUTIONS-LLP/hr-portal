@@ -6,15 +6,12 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
 imports: [
-    CommonModule,
-    ButtonModule,
-    InputTextModule,
-    MenuModule,
-    AvatarModule,RouterModule
+    CommonModule, ButtonModule, InputTextModule,MenuModule, AvatarModule,RouterModule
   ],  
    templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'

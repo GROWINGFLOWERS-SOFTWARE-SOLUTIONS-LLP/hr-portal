@@ -1,52 +1,57 @@
 import { Component } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { CalendarModule } from 'primeng/calendar';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-   imports: [CommonModule, CardModule, ChartModule],
+  imports: [CommonModule, CardModule, ChartModule, CalendarModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-activeSection: string = 'Dashboard';
-pieOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'bottom'
-    }
-  }
-};
-
-barOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'bottom'
-    }
-  },
-  scales: {
-    y: {
-      beginAtZero: true
-    }
-  }
-};
+ selectedDate: Date = new Date();
+  showCalendar: boolean = false;
 
   pieChartData: any;
   barChartData: any;
 
+  pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    }
+  };
+
+  barOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
+
   ngOnInit() {
     this.pieChartData = {
-      labels: ['Registered', 'Mapped', 'Interviewed', 'Hold', 'Offer'],
+      labels: ['Registered', 'Interviewed', 'Hold', 'Selected','Joined'],
       datasets: [
         {
-          data: [12, 9, 2, 1, 5],
-          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#FF7043'],
-          hoverBackgroundColor: ['#64B5F6', '#81C784', '#FFB74D', '#BA68C8', '#FF8A65']
+          data: [12, 2, 1, 5,2],
+          backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC','#d83434'],
+          hoverBackgroundColor: ['#64B5F6', '#81C784', '#FFB74D', '#BA68C8','#fa7070']
         }
       ]
     };
@@ -62,10 +67,13 @@ barOptions = {
         {
           label: 'Interviews',
           backgroundColor: '#66BB6A',
-          data: [8, 4, 6, 7, 3]
+          data: [15, 4, 6, 7, 3]
         }
       ]
-      
     };
+  }
+
+  toggleCalendar() {
+    this.showCalendar = !this.showCalendar;
   }
 }
