@@ -57,6 +57,7 @@
 }
 
 .ticket-title {
+  color: #000;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -74,6 +75,7 @@
 }
 
 .ticket-message {
+  color: #000;
   margin-bottom: 0.25rem;
 }
 

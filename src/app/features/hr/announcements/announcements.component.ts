@@ -71,7 +71,7 @@ export class AnnouncementsComponent {
       likes: 0
     },
      {
-      name: 'Mar Rueda',
+      name: 'Vincent Luggers',
       avatar: 'https://i.pravatar.cc/100?img=1',
       message: 'A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...',
       date: new Date(),
@@ -79,7 +79,7 @@ export class AnnouncementsComponent {
       likes: 16
     },
     {
-      name: 'Vincent Luggers',
+      name: 'Mar Rueda',
       avatar: 'https://i.pravatar.cc/100?img=2',
       message: 'I am alone, and feel the charm of existence in this spot...I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..',
       date: new Date(),
