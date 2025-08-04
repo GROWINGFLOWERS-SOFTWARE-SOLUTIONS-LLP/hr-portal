@@ -3,15 +3,18 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-my-profile',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-    templateUrl: './my-profile.component.html',
+  templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css'
 })
 export class MyProfileComponent {
   isEdit = false;
+
+  constructor(private router: Router) {}
 
   user = {
     name: 'Prasad Amrutkar',
@@ -35,7 +38,7 @@ export class MyProfileComponent {
   saveProfile() {
     this.isEdit = false;
     alert('Profile saved!');
-    // Add actual save logic here
+    this.router.navigate(['../navbar/dashboard']);
   }
 
   onPhotoChange(event: any) {

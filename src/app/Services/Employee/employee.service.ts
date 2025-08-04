@@ -38,6 +38,11 @@ export interface HolidayRequest {
   date: string;
   description: string;
 }
+export interface ForgotPasswordRequest {
+  email: string;
+  newPassword: string;
+  retypeNewPassword: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -69,4 +74,7 @@ export class EmployeeService {
   deleteHoliday(holidayId: string): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/holidays/${holidayId}`);
   }
+  forgotPassword(request: ForgotPasswordRequest): Observable<ApiResponse<any>> {
+  return this.http.put<ApiResponse<any>>(`${this.apiUrl}/forgot`, request);
+}
 }
