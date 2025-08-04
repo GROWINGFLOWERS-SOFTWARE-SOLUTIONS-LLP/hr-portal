@@ -11,12 +11,14 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './my-profile.component.css'
 })
 export class MyProfileComponent {
-isEdit = false;
- 
+  isEdit = false;
+
   user = {
+    name: 'Prasad Amrutkar',
+    jobTitle: 'Software Developer',
+    location: 'Pune, India',
     dob: '',
     gender: '',
-   
     address: '',
     nationality: '',
     contactNumber: '',
@@ -24,22 +26,22 @@ isEdit = false;
     jobRole: '',
     designation: '',
     joiningDate: '',
-    location: ''
   };
- 
+
   toggleEdit() {
     this.isEdit = !this.isEdit;
   }
- 
-  logout() {
-    alert('Logged out!');
+
+  saveProfile() {
+    this.isEdit = false;
+    alert('Profile saved!');
+    // Add actual save logic here
   }
- 
+
   onPhotoChange(event: any) {
     const file = event.target.files[0];
     if (file) {
-      alert('Photo selected: ' + file.name); // You can preview it here if needed
+      alert('Photo selected: ' + file.name);
     }
   }
 }
- 
