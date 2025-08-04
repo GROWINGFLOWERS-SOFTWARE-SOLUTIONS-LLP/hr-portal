@@ -1,14 +1,14 @@
 <app-toast-message></app-toast-message>
 
 <div class="grid">
-  <!-- Left Image Column -->
-  <div class="col-12 md:col-6 p-4 flex justify-content-center align-items-center">
-    <img
-      src="https://www.bestpeers.com/static/images/service/inner/hr_portal_banner.png"
-      class="w-full md:w-10 h-auto"
-      alt="HR Portal Banner"
-    />
-  </div>
+<!-- Left Image Column -->
+<div class="col-12 md:col-6 p-4 flex justify-content-center align-items-center">
+  <img
+    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1350&q=80"
+    class="w-full md:w-10 h-auto"
+    alt="HR Portal Banner"
+  />
+</div>
 
   <!-- Right Login Form Column -->
   <div class="col-12 md:col-6 flex align-items-center justify-content-center min-h-screen homebg p-4">
@@ -60,13 +60,13 @@
           </small>
         </div>
 
-        <div class="flex justify-content-between align-items-center mb-3">
-          <div class="flex align-items-center">
-            <p-checkbox inputId="remember" binary="true" formControlName="rememberMe"></p-checkbox>
-            <label for="remember" class="ml-2">Remember me</label>
-          </div>
-          <a href="#" class="text-blue-500 text-sm">Forgot Password?</a>
+              <div class="flex justify-content-between align-items-center mb-3">
+        <div class="flex align-items-center">
+          <p-checkbox inputId="remember" binary="true" formControlName="rememberMe"></p-checkbox>
+          <label for="remember" class="ml-2">Remember me</label>
         </div>
+        <a [routerLink]="['/forget-password']" class="text-blue-500 text-sm">Forgot Password?</a>
+      </div>
 
         <button type="submit" pButton class="w-full text-xl font-bold gradient-button"> Login </button>
 

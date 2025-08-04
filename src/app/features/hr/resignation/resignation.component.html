@@ -1,1 +1,101 @@
-<p>resignation works!</p>
+<div class="min-h-screen bg-gray-50 p-4 md:p-10 flex items-center justify-center">
+  <div class="w-full max-w-7xl space-y-10">
+
+    <div class="text-center">
+      <h1 class="text-3xl md:text-4xl font-bold text-blue-700">Employee Resignation Form</h1>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8">
+
+      <!-- Left Panel -->
+      <div class="w-full md:w-1/2 bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-200 space-y-6">
+        <h2 class="text-xl font-semibold text-blue-600">Submit Resignation</h2>
+
+        <div class="space-y-4">
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Employee Name</label>
+            <p-dropdown
+              [options]="employeeOptions"
+              [(ngModel)]="resignation.employeeName"
+              optionLabel="name"
+              placeholder="Select Employee"
+              class="w-full">
+            </p-dropdown>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
+            <p-calendar
+              [(ngModel)]="resignation.resignationDate"
+              showIcon="true"
+dateFormat="yy-mm-dd"
+              class="w-full">
+            </p-calendar>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Last Working Date</label>
+            <p-calendar
+              [(ngModel)]="resignation.lastWorkingDate"
+              showIcon="true"
+              dateFormat="yy-mm-dd"
+              class="w-full">
+            </p-calendar>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Resignation</label>
+            <input pInputText [(ngModel)]="resignation.reason" class="w-full" />
+          </div>
+
+          <div class="flex justify-end space-x-4 pt-4">
+            <button pButton label="Save" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700" (click)="onSave()" type="button"></button>
+            <button pButton label="Clear" class="bg-white text-blue-600 border border-blue-400 px-6 py-2 rounded-md hover:bg-blue-100" (click)="onClear()" type="button"></button>
+          </div>
+
+        </div>
+      </div>
+  <!-- Right Panel -->
+      <div class="w-full md:w-1/2 bg-white p-6 md:p-8 rounded-2xl shadow-md border border-gray-200">
+        <h2 class="text-xl font-semibold text-blue-600 mb-4">Submitted Resignations</h2>
+
+        <p-table
+          [value]="resignationsList"
+          *ngIf="resignationsList.length > 0"
+          [paginator]="true"
+          [rows]="5"
+          responsiveLayout="scroll">
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Employee</th>
+              <th>HR</th>
+              <th>Resignation Date</th>
+              <th>Last Working Day</th>
+              <th>Reason</th>
+              <th>Action</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr>
+              <td>{{ item.employeeName?.name }}</td>
+              <td>{{ item.hrName?.label }}</td>
+              <td>{{ item.resignationDate | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item.lastWorkingDate | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item.reason }}</td>
+              <td>
+                <button pButton icon="pi pi-pencil" class="p-button-text text-blue-600" (click)="onEdit(i)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+        <p *ngIf="resignationsList.length === 0" class="text-center text-gray-500 mt-6">
+          No resignation requests submitted yet.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,32 +1,14 @@
-<div class="content p-4">
-  <!-- Holiday Calendar Section -->
-  <div class="grid holiday-grid">
-    <div class="holiday-card-wrapper" *ngFor="let holiday of holidayList">
-      <p-card [header]="holiday.name" subheader="{{ holiday.date }}">
-        <div class="holiday-card-content">
-          <p>
-            Celebrate <strong>{{ holiday.name }}</strong> on 
-            <strong>{{ holiday.date }}</strong> 
-            <strong>{{ holiday.day }}</strong>
-          </p>
-        </div>
-      </p-card>
-    </div>
-  </div>
+<!-- src/app/components/holidays/holidays.component.html -->
 
-  <!-- Optional Holiday Section -->
-  <h3 class="optional-title">Optional Holidays</h3>
-  <div class="grid holiday-grid">
-    <div class="holiday-card-wrapper" *ngFor="let holiday of optionholiday">
-      <p-card [header]="holiday.name" subheader="{{ holiday.date }}">
-        <div class="holiday-card-content">
-          <p>
-            Celebrate <strong>{{ holiday.name }}</strong> on 
-            <strong>{{ holiday.date }}</strong> 
-            <strong>{{ holiday.day }}</strong>
-          </p>
-        </div>
-      </p-card>
+<div class="container">
+  <section>
+    <h1>Public & Festival Holidays</h1>
+    <div class="card-grid">
+      <div class="card" *ngFor="let holiday of publicHolidays">
+        <h3>{{ holiday.holidayName }}</h3>
+        <p><strong>📅 Date:</strong> {{ holiday.date }}</p>
+        <p><strong>📝 Description:</strong> {{ holiday.description }}</p>
+      </div>
     </div>
-  </div>
+  </section>
 </div>
