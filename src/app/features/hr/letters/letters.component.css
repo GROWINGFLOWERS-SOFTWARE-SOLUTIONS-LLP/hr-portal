@@ -1,57 +1,83 @@
-.p-datatable-responsive {
-    overflow-x: auto;
+/* Main container for table */
+.letters-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-@media screen and (max-width: 767px) {
-
-    .p-datatable th,
-    .p-datatable td {
-        display: block;
-        width: 100%;
-    }
-
-    .p-datatable td {
-        text-align: right;
-        position: relative;
-        padding-left: 50%;
-    }
-
-    .p-datatable td:before {
-
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        top: 5px;
-        font-weight: bold;
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .p-datatable td {
-        display: table-cell;
-        padding-left: 10px;
-    }
-}
-
-.p-button+.p-button {
-    margin-left: 0.5rem;
-}
-
-.action-icons {
+/* Dialog content container */
+.upload-letter-container {
     display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* Labels and inputs */
+.upload-letter-container label {
+    font-weight: 500;
+    color: #1d3557;
+}
+
+.upload-letter-container input,
+.upload-letter-container .p-dropdown {
+    border-radius: 8px;
+    border: 1px solid #cfd8e3;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* Button row styling */
+.upload-actions {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    justify-content: center;
+    gap: 1rem;
 }
 
-.edit-icon {
-    color: #007bff;
-    font-size: 1.2rem;
-    cursor: pointer;
+/* Select PDF button styling */
+:host ::ng-deep .select-pdf-btn .p-button {
+    background: linear-gradient(90deg, #3498db, #2c80b4) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.65rem 1.3rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.delete-icon {
-    color: #dc3545;
-    font-size: 1.2rem;
+:host ::ng-deep .select-pdf-btn .p-button:hover {
+    background: linear-gradient(90deg, #2c80b4, #1e5e8f) !important;
+    transform: translateY(-2px);
+}
+
+/* Upload button styling */
+.upload-btn {
+    background: linear-gradient(90deg, #27ae60, #1e8449);
+    border: none;
+    color: white;
+    padding: 0.65rem 1.3rem;
+    font-weight: 500;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+    background: linear-gradient(90deg, #1e8449, #166937);
+    transform: translateY(-2px);
+}
+
+/* PrimeNG Dialog custom header */
+:host ::ng-deep .p-dialog .p-dialog-header {
+    background: #f0f4f8;
+    font-weight: 600;
+    color: #1d3557;
+    border-bottom: 1px solid #e1e8ef;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    background: #ffffff;
 }

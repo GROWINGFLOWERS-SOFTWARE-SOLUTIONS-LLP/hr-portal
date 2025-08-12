@@ -1,50 +1,42 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { AvatarModule } from 'primeng/avatar';
+import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { EmployeeService, ProfileResponse } from '../../../Services/Employee/employee.service';
 
 @Component({
   selector: 'app-my-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    AvatarModule,
+    DividerModule,
+    ButtonModule
+  ],
   templateUrl: './my-profile.component.html',
-  styleUrl: './my-profile.component.css'
+  styleUrls: ['./my-profile.component.css']
 })
-export class MyProfileComponent {
-  isEdit = false;
+export class MyProfileComponent implements OnInit {
+  profile?: ProfileResponse;
 
-  constructor(private router: Router) {}
+  constructor(private employeeService: EmployeeService) {}
 
-  user = {
-    name: 'Prasad Amrutkar',
-    jobTitle: 'Software Developer',
-    location: 'Pune, India',
-    dob: '',
-    gender: '',
-    address: '',
-    nationality: '',
-    contactNumber: '',
-    email: '',
-    jobRole: '',
-    designation: '',
-    joiningDate: '',
-  };
-
-  toggleEdit() {
-    this.isEdit = !this.isEdit;
-  }
-
-  saveProfile() {
-    this.isEdit = false;
-    alert('Profile saved!');
-    this.router.navigate(['../navbar/dashboard']);
-  }
-
-  onPhotoChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      alert('Photo selected: ' + file.name);
+  ngOnInit(): void {
+    const empId = localStorage.getItem('empId');
+    if (empId) {
+      this.employeeService.getProfile(empId).subscribe({
+        next: (res) => {
+          if (res.status === 'success') {
+            this.profile = res.data;
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching profile:', err);
+        }
+      });
     }
   }
 }

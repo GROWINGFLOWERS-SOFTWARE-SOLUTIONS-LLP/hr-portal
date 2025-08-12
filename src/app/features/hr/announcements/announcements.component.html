@@ -1,92 +1,130 @@
-<div class="md:p-8 sm:p-1">
-    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-3">
-        <h2 class="m-0">Announcements</h2>
-        <button pButton type="button" icon="pi pi-megaphone" iconPos="left" class="text-lg font-bold"
-            (click)="showDialog = true" severity="info">Create Announcement
-        </button>
+<div class="announcements-container">
+  <!-- Create Button -->
+  <div class="create-button">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-plus"
+      label="Create Announcement"
+      (click)="openCreateDialog()"
+    ></button>
+  </div>
+
+  <!-- Announcement Cards -->
+  <div class="announcement-grid">
+    <p-card *ngFor="let item of paginatedAnnouncements" class="announcement-card">
+      <!-- Action Buttons -->
+      <div class="card-actions">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-sm p-button-success"
+          (click)="openEditDialog(item)"
+        ></button>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-sm p-button-danger"
+          (click)="deleteAnnouncement(item.announcementId)"
+        ></button>
+      </div>
+
+      <!-- Card Header -->
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt="avatar"
+            class="avatar"
+          />
+          <div class="card-info">
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.date | date : 'mediumDate' }} - {{ item.time }}</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Card Content -->
+      <p class="message">{{ item.message }}</p>
+
+      <!-- Card Footer -->
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-thumbs-up"
+          label="Like"
+          class="p-button-text"
+        ></button>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <!-- Pagination -->
+  <p-paginator
+    [rows]="rows"
+    [totalRecords]="announcements.length"
+    (onPageChange)="onPageChange($event)"
+    styleClass="paginator"
+  ></p-paginator>
+
+  <!-- Create/Edit Dialog -->
+  <p-dialog
+    header="{{ isEditMode ? 'Edit Announcement' : 'Create Announcement' }}"
+    [(visible)]="showDialog"
+    [modal]="true"
+    [style]="{ width: '400px' }"
+  >
+    <div class="dialog-form">
+      <label>Title</label>
+      <input
+        pInputText
+        [(ngModel)]="announcement.title"
+        placeholder="Enter title"
+      />
+
+      <label>Description</label>
+      <textarea
+        pInputText
+        [(ngModel)]="announcement.description"
+        rows="3"
+        placeholder="Enter message"
+      ></textarea>
+
+      <label>Date</label>
+      <p-calendar
+        [(ngModel)]="announcement.date"
+        showIcon="true"
+        dateFormat="yy-mm-dd"
+      ></p-calendar>
     </div>
 
-    <!-- Dialog for Create -->
-    <p-dialog header="Create Announcement" [(visible)]="showDialog" [modal]="true"
-        [style]="{width: '90vw', maxWidth: '500px'}" [closable]="true"
-        [breakpoints]="{'960px': '95vw', '640px': '100vw'}">
-        <div class="p-fluid">
-            <div class="field">
-                <label for="title">Title</label>
-                <input id="title" type="text" pInputText [(ngModel)]="announcement.title" class="w-full p-inputtext" />
-            </div>
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        label="Cancel"
+        class="p-button-text"
+        (click)="resetForm()"
+      ></button>
+      <button
+        pButton
+        label="Save"
+        (click)="submitAnnouncement()"
+        [disabled]="
+          !announcement.title || !announcement.description || !announcement.date
+        "
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>
 
-            <div class="field">
-                <label for="description">Description</label>
-                <textarea pInputTextarea id="description" [(ngModel)]="announcement.description" rows="4"
-                    class="text-base p-2 border-1 border-solid border-round w-full outline-none focus:border-primary"
-                    autoResize>
-        </textarea>
-            </div>
-
-            <div class="field flex flex-column">
-                <label for="date" class="mb-2">Date</label>
-                <p-calendar id="date" [(ngModel)]="announcement.date" dateFormat="yy-mm-dd" showIcon inputId="date"
-                    class="w-full" [style]="{ 'width': '100%' }" inputStyleClass="w-full" appendTo="body">
-                </p-calendar>
-            </div>
-
-            <div class="flex justify-end mt-3">
-                <button pButton type="button" label="Submit" class="p-button-success" (click)="submitAnnouncement()"
-                    severity="info"></button>
-            </div>
-        </div>
-    </p-dialog>
-
-    <!-- Announcement List -->
-    <div *ngFor="let item of paginatedAnnouncements" class="relative mb-3">
-        <!-- 🔘 Top-right Buttons -->
-        <div class="absolute top-0 right-0 p-2 z-10 flex gap-2">
-            <p-button type="button" icon="pi pi-pencil" severity="success" [outlined]="true"
-                styleClass="p-button-sm"></p-button>
-            <p-button type="button" icon="pi pi-trash" severity="danger" [outlined]="true"
-                styleClass="p-button-sm"></p-button>
-        </div>
-
-        <!-- 🧾 Card -->
-        <p-card class="shadow-2 border-round surface-card">
-            <ng-template pTemplate="content">
-                <div class="flex gap-3">
-                    <!-- Avatar -->
-                    <p-avatar [image]="item.avatar" shape="circle" [ngClass]="{
-            'w-2rem h-2rem': true,
-            'md:w-3rem md:h-3rem': true,
-            'lg:w-4rem lg:h-4rem': true
-              }"></p-avatar>
-
-                    <!-- Info -->
-                    <div class="flex-1 w-full mt-2">
-                        <div class="font-semibold text-cyan-600 mb-2 text-xl">
-                            {{ item.name }}
-                        </div>
-                        <div class="text-base mb-2">{{ item.message }}</div>
-
-                        <div class="flex justify-between items-center text-sm text-color-secondary mt-2 w-full">
-                            <div class="flex-1 text-left break-words">
-                                {{ item.date | date: 'fullDate' }} at {{ item.time }}
-                            </div>
-                            <div class="text-cyan-600 cursor-pointer whitespace-nowrap text-right">
-                                Comment · Like
-                                <span *ngIf="item.likes > 0">• {{ item.likes }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-        </p-card>
-    </div>
-
-
-    <!-- Paginator -->
-    <!-- <p-paginator [rows]="rows" [totalRecords]="announcements.length" [rowsPerPageOptions]="[2, 5, 10]"
-        (onPageChange)="onPageChange($event)">
-    </p-paginator> -->
-     <p-paginator [rows]="rows" [totalRecords]="announcements.length"
-        (onPageChange)="onPageChange($event)">
-    </p-paginator>
+<!-- Success popup -->
+<div
+  *ngIf="showDeleteSuccessPopup"
+  class="success-popup"
+  [class.fade-out]="popupFadingOut"
+>
+  Announcement deleted successfully
 </div>

@@ -1,77 +1,103 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextarea } from 'primeng/inputtextarea';
-import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ApiResponse, EmployeeService } from '../../../Services/Employee/employee.service';
+
+interface ResignationRequest {
+  empName: string;
+  resignDate: Date;
+  lastWorkingDate: Date;
+  reason: string;
+  noticePeriodDays: number;
+}
 
 @Component({
   selector: 'app-resignation',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
     DropdownModule,
-    InputTextModule,
-    InputTextarea,
-    CalendarModule,
     ButtonModule,
-    TableModule
-],
+    CalendarModule,
+    ToastModule
+  ],
+  providers: [MessageService],
   templateUrl: './resignation.component.html',
-  styleUrl: './resignation.component.css'
+  styleUrls: ['./resignation.component.css']
 })
-export class ResignationComponent {
- hrNames = [
-    { label: 'Shruti', value: 'Shruti' },
-    { label: 'Priya Patel', value: 'Priya Patel' }
-  ];
+export class ResignationComponent implements OnInit {
 
-  employeeOptions = [
-    { name: 'Ankita Sharma', code: 'E1' },
-    { name: 'Rahul Jain', code: 'E2' },
-    { name: 'Sneha Patil', code: 'E3' }
-  ];
+  employeeOptions: { label: string; value: string }[] = [];
 
-  resignation = {
-    employeeName: null,
-    hrName: null,
-    resignationDate: null,
-    lastWorkingDate: null,
+  resignation: ResignationRequest = {
+    empName: '',
+    resignDate: new Date(),
+    lastWorkingDate: new Date(),
     reason: '',
-    comments: ''
+    noticePeriodDays: 0
   };
 
-  resignationsList: any[] = [];
-  selectedIndex: number | null = null;
+  constructor(
+    private employeeService: EmployeeService,
+    private http: HttpClient,
+    private msg: MessageService
+  ) {}
 
-  onSave() {
-    if (this.selectedIndex !== null) {
-      this.resignationsList[this.selectedIndex] = { ...this.resignation };
-      this.selectedIndex = null;
-    } else {
-      this.resignationsList.push({ ...this.resignation });
-    }
-    this.onClear();
- }
-
-  onEdit(index: number) {
-    this.selectedIndex = index;
-    this.resignation = { ...this.resignationsList[index] };
+  ngOnInit(): void {
+    this.loadEmployees();
   }
 
-  onClear() {
-    this.resignation = {
-      employeeName: null,
-      hrName: null,
-      resignationDate: null,
-      lastWorkingDate: null,
-      reason: '',
-      comments: ''
-    };
-    this.selectedIndex = null;
-  }
+  loadEmployees() {
+    this.http.get<ApiResponse<any[]>>('http://localhost:8446/api/employees')
+      .subscribe(res => {
+        if (res.status === 'success' && res.data) {
+          this.employeeOptions = res.data.map(e => ({
+            label: `${e.firstName} ${e.lastName}`,
+            value: `${e.firstName} ${e.lastName}`
+          }));
+        }
+      });
+  }
 
+  submitResignation() {
+    this.http.post<ApiResponse<any>>('http://localhost:8446/api/resignations', this.resignation)
+      .subscribe({
+        next: (res) => {
+          if (res.status === 'success') {
+            // Show toast in top-right corner
+            this.msg.add({ 
+              severity: 'success', 
+              summary: 'Submitted resignation.. Waiting For the approval', 
+              detail: '', 
+              life: 4000 
+            });
+
+            // Reset form
+            this.resignation = {
+              empName: '',
+              resignDate: new Date(),
+              lastWorkingDate: new Date(),
+              reason: '',
+              noticePeriodDays: 0
+            };
+          } else {
+            this.msg.add({ severity: 'error', summary: 'Error', detail: res.message });
+          }
+        },
+        error: (err) => {
+          this.msg.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.message || 'Failed to submit resignation'
+          });
+        }
+      });
+  }
 }

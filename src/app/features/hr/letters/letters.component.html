@@ -1,64 +1,65 @@
-<div class="p-6">
-  <button class="bg-purple-600 text-white px-4 py-2 mb-4 rounded" (click)="toggleView()">
-    {{ showForm ? 'Show All Letters' : 'Upload New Letter' }}
-  </button>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
-  <div *ngIf="showForm" class="bg-white shadow p-6 rounded space-y-4">
-    <div>
-      <label class="block font-semibold mb-1">Employee Name</label>
-      <input type="text" [(ngModel)]="newEmpName"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-        placeholder="Enter Employee Name" />
-    </div>
+<div class="letters-container">
+  <h2>Employee Letters</h2>
+  <button pButton label="Upload Letter" icon="pi pi-upload" (click)="openUploadDialog()"></button>
 
-    <div>
-      <label class="block font-semibold mb-1 w-full">Type of Letter</label>
-      <p-dropdown [options]="letterTypes" [(ngModel)]="selectedLetter" placeholder="Select Letter Type"
-        styleClass="w-full" [style]="{width: '100%'}">
-      </p-dropdown>
-    </div>
-
-    <div>
-      <label class="block font-semibold mb-1">Upload File</label>
-      <input type="file" (change)="onFileSelect($event)"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
-      <p *ngIf="fileName" class="text-sm text-gray-600 mt-1">Selected: {{ fileName }}</p>
-    </div>
-
-    <button class="bg-green-500 text-white px-4 py-2 rounded" (click)="uploadDocument()">
-      {{ isEditMode ? 'Update Letter' : 'Upload Letter' }}
-    </button>
-  </div>
-
-  <div *ngIf="!showForm" class="bg-white shadow p-6 rounded mt-4">
-    <p-table [value]="letters" [responsive]="true" class="p-datatable-responsive">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Sr No</th>
-          <th>Employee Name</th>
-          <th>Letter Type</th>
-          <th>File Name</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-letter let-i="rowIndex">
-        <tr>
-          <td>{{ i + 1 }}</td>
-          <td>{{ letter.empName }}</td>
-          <td>{{ letter.type }}</td>
-          <td>
-            <button class="text-blue-500" (click)="viewFile(letter)">
-              <i class="pi pi-eye"></i> {{ letter.fileName }}
-            </button>
-          </td>
-          <td>
-            <div class="flex justify-center gap-4">
-              <i class="pi pi-pencil text-blue-500 cursor-pointer text-lg" title="Edit" (click)="editLetter(i)"></i>
-              <i class="pi pi-trash text-red-500 cursor-pointer text-lg" title="Delete" (click)="deleteLetter(i)"></i>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+  <p-table [value]="letters" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Employee Name</th>
+        <th>Letter Type</th>
+        <th>File Name</th>
+        <th>Upload Date</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-letter>
+      <tr>
+        <td>{{ letter.empName }}</td>
+        <td>{{ letter.letterType }}</td>
+        <td>{{ letter.fileName }}</td>
+        <td>{{ letter.uploadDate }}</td>
+        <td>
+          <button pButton icon="pi pi-download" class="p-button-text" (click)="downloadLetter(letter.letterId!, letter.fileName)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" (click)="confirmDelete(letter.letterId!)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
+
+<!-- Upload Dialog -->
+<p-dialog header="Upload Letter" [(visible)]="displayUploadDialog" [modal]="true" [style]="{width: '420px'}">
+  <div class="upload-letter-container">
+    <div class="p-field">
+      <label>Employee Name</label>
+      <input pInputText [(ngModel)]="uploadData.employeeName" />
+    </div>
+    <div class="p-field">
+      <label>Letter Type</label>
+      <p-dropdown [options]="letterTypes" [(ngModel)]="uploadData.letterType" optionLabel="label" optionValue="value"></p-dropdown>
+    </div>
+
+    <!-- Buttons Row -->
+    <div class="upload-actions">
+      <p-fileUpload 
+        mode="basic" 
+        name="file" 
+        accept=".pdf" 
+        chooseLabel="Select PDF" 
+        customUpload="true" 
+        (onSelect)="handleFileSelect($event)" 
+        class="select-pdf-btn">
+      </p-fileUpload>
+
+      <button pButton 
+        label="Upload" 
+        icon="pi pi-check" 
+        class="upload-btn"
+        (click)="uploadLetter()">
+      </button>
+    </div>
+  </div>
+</p-dialog>

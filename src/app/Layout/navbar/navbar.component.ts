@@ -31,7 +31,7 @@ menuItems = [
   { label: 'Dashboard', icon: 'pi pi-th-large', route: '/navbar/dashboard' },
   { label: 'Letters', icon: 'pi pi-file', route: '/navbar/letters' },
   { label: 'Meeting', icon: 'pi pi-calendar', route: '/navbar/meeting' },
-  { label: 'My HR', icon: 'pi pi-user', route: '/navbar/my-hr' },
+  // { label: 'My HR', icon: 'pi pi-user', route: '/navbar/my-hr' },
   { label: 'Holiday', icon: 'pi pi-sun', route: '/navbar/holidays' },
   { label: 'Announcement', icon: 'pi pi-bell', route: '/navbar/announcement' },
   { label: 'Resignation', icon: 'pi pi-sign-out', route: '/navbar/resignation' },

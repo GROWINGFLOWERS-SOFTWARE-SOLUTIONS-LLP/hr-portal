@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +8,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { CalendarModule } from 'primeng/calendar';
 import { PaginatorModule } from 'primeng/paginator';
+import { AnnouncementEntity, AnnouncementRequest, EmployeeService } from '../../../Services/Employee/employee.service';
 
 @Component({
   selector: 'app-announcements',
@@ -16,7 +16,6 @@ import { PaginatorModule } from 'primeng/paginator';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     DialogModule,
     ButtonModule,
     InputTextModule,
@@ -28,87 +27,134 @@ import { PaginatorModule } from 'primeng/paginator';
   templateUrl: './announcements.component.html',
   styleUrls: ['./announcements.component.css']
 })
-export class AnnouncementsComponent {
+export class AnnouncementsComponent implements OnInit {
   showDialog: boolean = false;
+  isEditMode: boolean = false;
+  editingId: string | null = null;
 
-  announcement = {
+  announcement: AnnouncementRequest = {
     title: '',
     description: '',
-    date: null
+    date: ''
   };
 
-  announcements = [
-    {
-      name: 'Mar Rueda',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-      message: 'A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...',
-      date: new Date(),
-      time: '9:23 PM',
-      likes: 16
-    },
-    {
-      name: 'Vincent Luggers',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-      message: 'I am alone, and feel the charm of existence in this spot...I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..',
-      date: new Date(),
-      time: '9:23 PM',
-      likes: 22
-    },
-    {
-      name: 'Alice Smith',
-      avatar: 'https://i.pravatar.cc/100?img=3',
-      message: 'Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...',
-      date: new Date(),
-      time: '9:24 PM',
-      likes: 5
-    },
-    {
-      name: 'John Doe',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-      message: 'Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...',
-      date: new Date(),
-      time: '9:25 PM',
-      likes: 0
-    },
-     {
-      name: 'Vincent Luggers',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-      message: 'A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...A wonderful serenity has taken possession of my entire soul...',
-      date: new Date(),
-      time: '9:23 PM',
-      likes: 16
-    },
-    {
-      name: 'Mar Rueda',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-      message: 'I am alone, and feel the charm of existence in this spot...I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..I am alone, and feel the charm of existence in this spot..',
-      date: new Date(),
-      time: '9:23 PM',
-      likes: 22
-    },
-    {
-      name: 'Alice Smith',
-      avatar: 'https://i.pravatar.cc/100?img=3',
-      message: 'Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...Even the all-powerful Pointing has no control...',
-      date: new Date(),
-      time: '9:24 PM',
-      likes: 5
-    },
-    {
-      name: 'John Doe',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-      message: 'Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...Far far away, behind the word mountains...',
-      date: new Date(),
-      time: '9:25 PM',
-      likes: 0
-    },
-  ];
-
+  announcements: any[] = [];
   paginatedAnnouncements: any[] = [];
   first: number = 0;
   rows: number = 3;
 
+  // Popup flags
+  showDeleteSuccessPopup = false;
+  popupFadingOut = false;
+
+  constructor(private employeeService: EmployeeService) {}
+
   ngOnInit() {
+    this.getAllAnnouncements();
+  }
+
+  getAllAnnouncements() {
+    this.employeeService.getAllAnnouncements().subscribe({
+      next: (res) => {
+        this.announcements = res.data.map((item: AnnouncementEntity) => ({
+          announcementId: item.announcementId,
+          name: item.title,
+          avatar: 'https://i.pravatar.cc/100',
+          message: item.description,
+          date: new Date(item.date),
+          time: new Date(item.date).toLocaleTimeString(),
+          likes: 0,
+          raw: item // Store raw object for editing
+        }));
+        this.updatePaginatedAnnouncements();
+      },
+      error: (err) => {
+        console.error('Error fetching announcements:', err);
+      }
+    });
+  }
+
+  openEditDialog(item: any) {
+    this.isEditMode = true;
+    this.editingId = item.announcementId;
+    this.announcement = {
+      title: item.raw.title,
+      description: item.raw.description,
+      date: item.raw.date
+    };
+    this.showDialog = true;
+  }
+
+  openCreateDialog() {
+    this.isEditMode = false;
+    this.editingId = null;
+    this.announcement = { title: '', description: '', date: '' };
+    this.showDialog = true;
+  }
+
+  submitAnnouncement() {
+    const request: AnnouncementRequest = {
+      title: this.announcement.title,
+      description: this.announcement.description,
+      date: new Date(this.announcement.date).toISOString().split('T')[0]
+    };
+
+    if (this.isEditMode && this.editingId) {
+      this.employeeService.updateAnnouncement(this.editingId, request).subscribe({
+        next: () => {
+          this.getAllAnnouncements();
+          this.resetForm();
+        },
+        error: (err) => {
+          console.error('Error updating announcement:', err);
+        }
+      });
+    } else {
+      this.employeeService.createAnnouncement(request).subscribe({
+        next: () => {
+          this.getAllAnnouncements();
+          this.resetForm();
+        },
+        error: (err) => {
+          console.error('Error creating announcement:', err);
+        }
+      });
+    }
+  }
+
+  deleteAnnouncement(announcementId: string) {
+    if (confirm('Are you sure you want to delete this announcement?')) {
+      this.employeeService.deleteAnnouncement(announcementId).subscribe({
+        next: () => {
+          this.getAllAnnouncements();
+
+          // Show success popup
+          this.showDeleteSuccessPopup = true;
+
+          // Start fade out after 2 seconds
+          setTimeout(() => {
+            this.popupFadingOut = true;
+          }, 2000);
+
+          // Hide popup after fade-out animation (0.4s)
+          setTimeout(() => {
+            this.showDeleteSuccessPopup = false;
+            this.popupFadingOut = false;
+          }, 2400);
+        },
+        error: (err) => {
+          console.error('Error deleting announcement:', err);
+        }
+      });
+    }
+  }
+
+  resetForm() {
+    this.showDialog = false;
+    this.editingId = null;
+    this.isEditMode = false;
+    this.announcement = { title: '', description: '', date: '' };
+    this.first = 0;
     this.updatePaginatedAnnouncements();
   }
 
@@ -122,27 +168,5 @@ export class AnnouncementsComponent {
     const start = this.first;
     const end = this.first + this.rows;
     this.paginatedAnnouncements = this.announcements.slice(start, end);
-  }
-
-  submitAnnouncement() {
-    const now = new Date();
-    this.announcements.unshift({
-      name: 'New Announcement',
-      avatar: 'https://i.pravatar.cc/100?img=5',
-      message: this.announcement.description,
-      date: this.announcement.date || now,
-      time: now.toLocaleTimeString(),
-      likes: 0
-    });
-    this.showDialog = false;
-
-    this.announcement = {
-      title: '',
-      description: '',
-      date: null
-    };
-
-    this.first = 0;
-    this.updatePaginatedAnnouncements();
   }
 }

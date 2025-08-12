@@ -56,7 +56,14 @@ export class LoginComponent {
     this.employeeService.login({ email: username, password }).subscribe({
       next: (res) => {
         if (res.status === 'success') {
+          const user = res.data;
+
+          // ✅ Save empId to localStorage for My Profile
+          localStorage.setItem('empId', user.empId);
+
           this.showSuccess();
+
+          // Redirect after a short delay
           setTimeout(() => this.router.navigate(['/navbar']), 1000);
         } else {
           this.showError(res.message);

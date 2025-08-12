@@ -1,91 +1,25 @@
-<div class="profile-container">
-  <!-- Top Profile Row -->
-<div class="profile-top">
-  <div class="image-wrapper">
-    <img
-      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-      alt="Profile"
-      class="profile-photo"
-    />
-    <label class="camera-icon">
-      <input type="file" hidden (change)="onPhotoChange($event)" /> 📷
-    </label>
-  </div>
+<div *ngIf="profile" class="profile-card-container">
+  <div class="profile-card-wrapper">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="header">
+          <p-avatar
+            image="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            shape="circle"
+            size="xlarge"
+          ></p-avatar>
+          <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
+          <p>{{ profile.role }} - {{ profile.department }}</p>
+        </div>
+      </ng-template>
 
-  <div class="profile-info">
-    <h2>{{ user.name }}</h2>
-    <p>{{ user.jobTitle }}</p>
-    <p>{{ user.location }}</p>
-  </div>
-
-  <div class="profile-actions">
-    <button class="btn edit" (click)="toggleEdit()">
-      {{ isEdit ? 'Cancel' : 'Edit Profile' }}
-    </button>
-    <button class="btn save" *ngIf="isEdit" (click)="saveProfile()">Save</button>
-  </div>
-</div>
-
-
-  <!-- Right Panel -->
-  <div class="info-panel">
-    <div class="info-columns">
-      <!-- Personal Info -->
-      <div class="info-section">
-        <h3>Personal Information</h3>
-
-        <label>DOB:</label>
-        <input type="date" [(ngModel)]="user.dob" [disabled]="!isEdit" />
-
-        <label>Gender:</label>
-        <select [(ngModel)]="user.gender" [disabled]="!isEdit">
-          <option value="">Select</option>
-          <option value="Female">Female</option>
-          <option value="Male">Male</option>
-          <option value="Other">Other</option>
-        </select>
-
-        <label>Address:</label>
-        <input type="text" [(ngModel)]="user.address" [disabled]="!isEdit" />
-
-        <label>Nationality:</label>
-        <input type="text" [(ngModel)]="user.nationality" [disabled]="!isEdit" />
-
-        <label>Contact Number:</label>
-        <input type="text" [(ngModel)]="user.contactNumber" [disabled]="!isEdit" />
+      <div class="details">
+        <p><strong>Employee ID:</strong> {{ profile.empId }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+        <p><strong>Mobile:</strong> {{ profile.mobile }}</p>
+        <p><strong>Joining Date:</strong> {{ profile.joiningDate }}</p>
+        <p><strong>Address:</strong> {{ profile.address }}</p>
       </div>
-
-      <!-- Official Info -->
-      <div class="info-section">
-        <h3>Official Information</h3>
-
-        <label>Email ID:</label>
-        <input type="email" [(ngModel)]="user.email" [disabled]="!isEdit" />
-
-        <label>Job Role:</label>
-        <select [(ngModel)]="user.jobRole" [disabled]="!isEdit">
-          <option value="">Select</option>
-          <option>HR Executive</option>
-          <option>Software Developer</option>
-          <option>Project Manager</option>
-          <option>Business Analyst</option>
-        </select>
-
-        <label>Designation:</label>
-        <select [(ngModel)]="user.designation" [disabled]="!isEdit">
-          <option value="">Select</option>
-          <option>HR Manager</option>
-          <option>Software Engineer</option>
-          <option>Senior Developer</option>
-          <option>Team Lead</option>
-        </select>
-
-        <label>Date of Joining:</label>
-        <input type="date" [(ngModel)]="user.joiningDate" [disabled]="!isEdit" />
-
-        <label>Job Location:</label>
-        <input type="text" [(ngModel)]="user.location" [disabled]="!isEdit" />
-      </div>
-    </div>
+    </p-card>
   </div>
 </div>

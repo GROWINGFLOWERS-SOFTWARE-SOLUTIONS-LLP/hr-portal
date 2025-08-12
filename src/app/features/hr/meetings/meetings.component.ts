@@ -7,7 +7,26 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
- 
+import { DialogModule } from 'primeng/dialog';
+import { EmployeeService } from '../../../Services/Employee/employee.service';
+
+interface EmployeeOption {
+  name: string;
+  code: string;
+}
+
+interface HrOption {
+  label: string;
+  value: string;
+}
+
+interface MeetingRequest {
+  date: string;
+  topic: string;
+  attendees: string[];
+  conclusion: string;
+}
+
 @Component({
   selector: 'app-meetings',
   standalone: true,
@@ -19,51 +38,83 @@ import { TableModule } from 'primeng/table';
     InputTextModule,
     InputTextarea,
     ButtonModule,
-    TableModule
+    TableModule,
+    DialogModule
   ],
   templateUrl: './meetings.component.html',
-  styleUrl: './meetings.component.css'
+  styleUrls: ['./meetings.component.css']
 })
 export class MeetingsComponent {
- 
-  hrNames = [
-  { label: 'Shruti', value: 'Shruti' },
-  { label: 'Priya Patel', value: 'Priya Patel' }
-];
- 
-  meeting = {
+  employeeOptions: EmployeeOption[] = [
+    { name: 'Ankita Sharma', code: 'E1' },
+    { name: 'Rahul Jain', code: 'E2' },
+    { name: 'Sneha Patil', code: 'E3' }
+  ];
+
+  hrNames: HrOption[] = [
+    { label: 'Prasad Amrutkar', value: 'Prasad Amrutkar' },
+    { label: 'Vikram Singh', value: 'Vikram Singh' }
+  ];
+
+  meeting: {
+    employeeName: EmployeeOption | null;
+    hrName: string | null;
+    date: Date | null;
+    topic: string;
+    conclusion: string;
+  } = {
     employeeName: null,
     hrName: null,
     date: null,
     topic: '',
     conclusion: ''
   };
- 
-  selectedIndex: number | null = null;
- 
-  employeeOptions = [
-    { name: 'Ankita Sharma', code: 'E1' },
-    { name: 'Rahul Jain', code: 'E2' },
-    { name: 'Sneha Patil', code: 'E3' }
-  ];
- 
-  meetingsList: any[] = [];
- 
+
+  showSuccessPopup: boolean = false;
+
+  constructor(private employeeService: EmployeeService) {}
+
+  formatDate(date: Date | null): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`; // yyyy-MM-dd
+  }
+
   onSave() {
-    if (this.selectedIndex !== null) {
-      this.meetingsList[this.selectedIndex] = { ...this.meeting };
-      this.selectedIndex = null;
-    } else {
-      this.meetingsList.push({ ...this.meeting });
+    const attendees: string[] = [];
+
+    if (this.meeting.employeeName?.name) {
+      attendees.push(this.meeting.employeeName.name);
     }
-    this.onClear();
+
+    if (this.meeting.hrName) {
+      attendees.push(this.meeting.hrName);
+    }
+
+    const request: MeetingRequest = {
+      date: this.formatDate(this.meeting.date),
+      topic: this.meeting.topic,
+      attendees: attendees,
+      conclusion: this.meeting.conclusion
+    };
+
+    console.log('Sending meeting request:', request);
+
+    this.employeeService.createMeeting(request).subscribe({
+      next: () => {
+        this.showSuccessPopup = true;
+        this.onClear();
+      },
+      error: (err) => {
+        console.error('Failed to schedule meeting:', err);
+        alert('❌ Failed to schedule meeting. Please try again.');
+      }
+    });
   }
- 
-  onEdit(index: number) {
-    this.selectedIndex = index;
-    this.meeting = { ...this.meetingsList[index] };
-  }
- 
+
   onClear() {
     this.meeting = {
       employeeName: null,
@@ -72,7 +123,5 @@ export class MeetingsComponent {
       topic: '',
       conclusion: ''
     };
-    this.selectedIndex = null;
   }
 }
- 
