@@ -1,53 +1,52 @@
-// navbar.component.ts
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { SidebarModule } from 'primeng/sidebar';
+import { PanelMenuModule } from 'primeng/panelmenu';
 import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MenuModule } from 'primeng/menu';
-import { AvatarModule } from 'primeng/avatar';
-import { MenuItem } from 'primeng/api';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    CommonModule, ButtonModule, InputTextModule, MenuModule, AvatarModule, RouterModule
-  ],
+  imports: [CommonModule, SidebarModule, PanelMenuModule, ButtonModule, RouterModule],
+  providers: [DatePipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  constructor(private router: Router) {}
-  sidebarVisible = true;
 
-  profileMenu: MenuItem[] = [
-    { label: 'Profile', icon: 'pi pi-user', command: () => this.onProfile() },
-    { separator: true },
-    { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.onLogout() }
-  ];
-menuItems = [
-  { label: 'Dashboard', icon: 'pi pi-th-large', route: '/navbar/dashboard' },
-  { label: 'Letters', icon: 'pi pi-file', route: '/navbar/letters' },
-  { label: 'Meeting', icon: 'pi pi-calendar', route: '/navbar/meeting' },
-  // { label: 'My HR', icon: 'pi pi-user', route: '/navbar/my-hr' },
-  { label: 'Holiday', icon: 'pi pi-sun', route: '/navbar/holidays' },
-  { label: 'Announcement', icon: 'pi pi-bell', route: '/navbar/announcement' },
-  { label: 'Resignation', icon: 'pi pi-sign-out', route: '/navbar/resignation' },
-  { label: 'Help', icon: 'pi pi-question-circle', route: '/navbar/help' },
-];
+  today: string = '';   // initialize empty first
+  role: string = "HR";
+  sidebarVisible: boolean = true;
+  isMobile: boolean = false;
+  userName: string | null = null;
+  private router = inject(Router);
 
+  constructor(private datePipe: DatePipe) {}
+
+  ngOnInit() {
+    this.today = this.datePipe.transform(new Date(), 'fullDate') ?? '';
+    this.checkScreenSize();
+  }
+
+  // Detect window resize to set isMobile flag
+  @HostListener('window:resize', [])
+  onWindowResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
 
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
-  onProfile() {
-    this.router.navigate(['/my-profile']); 
+  logout() {
+    // 🔒 Add your logout logic here
+    // this.auth.logout();
+    this.router.navigateByUrl('/login');
   }
 
-  onLogout() {
-    this.router.navigate(['/login']);
-  }
 }

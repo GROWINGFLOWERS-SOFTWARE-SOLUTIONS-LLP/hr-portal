@@ -1,45 +1,104 @@
-<!-- navbar.component.html -->
-<nav class="navbar">
-  <!-- Left: Menu Icon & Title -->
-  <div class="navbar-left">
-    <button pButton icon="pi pi-bars" class="p-button-text p-button-rounded menu-btn" (click)="toggleSidebar()"></button>
-    <span class="title">HR Portal</span>
-  </div>
 
-  <!-- Center: Search -->
-  <div class="navbar-center">
-    <span class="p-input-icon-left">
-      <input type="text" pInputText placeholder="Search" />
-    </span>
+<header class="header p-shadow-4 p-d-flex p-jc-between p-ai-center p-px-4 p-py-3">
+  <div class="p-d-flex p-ai-center gap-2">
+    <!-- <img src="/logo_90_B.png" alt="Logo" class="logo" /> -->
+    <h1 class="company-name" style="font-size: 30px;color:white">GFSS HR PORTAL</h1>
   </div>
+ 
+  <div class="header-info">
+    
+<ng-template #loading>
+  <span>Welcome!</span>
+</ng-template>
+<span>{{ today }}</span>
+    <button
+      pButton
+      type="button"
+      icon="pi pi-bars"
+      class="p-button-text p-button-plain menu-toggle"
+      (click)="toggleSidebar()"
+    ></button>
+  </div>
+</header>
 
-  <!-- Right: Icons and Avatar -->
-  <div class="navbar-right">
-    <i class="pi pi-info-circle icon-spacing"></i>
-    <i class="pi pi-bell icon-spacing"></i>
-    <p-avatar
-      image="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg"
-      shape="circle"
-      size="large"
-      (click)="menu.toggle($event)">
-    </p-avatar>
-    <p-menu #menu [popup]="true" [model]="profileMenu"></p-menu>
-  </div>
-</nav>
-<div class="portal-container">
-  <!-- Sidebar -->
-  <div class="sidebar" *ngIf="sidebarVisible">
-    <ul class="menu-list">
-      <li *ngFor="let item of menuItems"
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
-        <i class="{{ item.icon }}"></i> {{ item.label }}
-      </li>
-    </ul>
-  </div>
-   <!-- Content Area -->
-  <div class="content-area" style="flex: 1; padding: 1rem;">
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar p-shadow-2"  [ngClass]="{ 'sidebar-hidden': !sidebarVisible && isMobile }">
+    <nav class="p-d-flex p-flex-column p-jc-between p-h-full">
+      <div class="nav-links">
+
+        <!-- Shared Menu -->
+        <a routerLink="/app/dashboard-hr" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-home"></i> HR Dashboard
+        </a>
+        <a routerLink="/app/dashboard-emp" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-home"></i> Dashboard
+        </a>
+
+        <a routerLink="/app/announcements" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-megaphone"></i> Announcements
+        </a>
+        <a routerLink="/app/holidays" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-sun"></i> Holidays
+        </a>
+        <a routerLink="/app/events" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-star"></i> Events
+        </a>
+        <a routerLink="/app/my-hr/manage" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-id-card"></i> My HR
+        </a>
+
+         <a routerLink="/app/my-hr" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-id-card"></i> My HR
+        </a>
+        <a routerLink="/app/letters/manage" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-envelope"></i> Manage Letters
+        </a>
+        <a routerLink="/app/letters" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-envelope"></i> My Letters
+        </a>
+
+        <a routerLink="/app/meetings/manage" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-calendar-plus"></i> Manage Meetings
+        </a>
+        <a routerLink="/app/meetings/view" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-calendar-plus"></i> My Meetings
+        </a>
+
+        <a routerLink="/app/resignations/admin" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-user-minus"></i> Resignations
+        </a>
+        <a routerLink="/app/resignations" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-user-minus"></i> My Resignation
+        </a>
+
+        <a routerLink="/app/help/manage" *ngIf="role === 'HR'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-question-circle"></i> Help Requests
+        </a>
+        <a routerLink="/app/help" *ngIf="role === 'EMPLOYEE'" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-question-circle"></i> Help
+        </a>
+
+      </div>
+
+      <div class="logout-button">
+        <button
+          pButton
+          type="button"
+          label="Logout"
+          icon="pi pi-sign-out"
+          class="p-button-danger p-button-text w-full"
+          (click)="logout()"
+        ></button>
+      </div>
+    </nav>
+  </aside> 
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content p-p-4">
     <router-outlet></router-outlet>
-  </div>
-</div>
+  </main>
+</div> 
+
+
+
