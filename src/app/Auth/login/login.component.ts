@@ -63,8 +63,8 @@ export class LoginComponent {
 
           this.showSuccess();
 
-          // Redirect after a short delay
-          setTimeout(() => this.router.navigate(['/navbar']), 1000);
+          // ✅ Redirect directly to dashboard after login
+          setTimeout(() => this.router.navigate(['/navbar/dashboard']), 1000);
         } else {
           this.showError(res.message);
         }
