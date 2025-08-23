@@ -1,35 +1,38 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { SidebarModule } from 'primeng/sidebar';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { ButtonModule } from 'primeng/button';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, SidebarModule, PanelMenuModule, ButtonModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   providers: [DatePipe],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
 
-  today: string = '';   // initialize empty first
-  role: string = "HR";
-  sidebarVisible: boolean = true;
+  today: string = '';
+  role: string = 'HR';      // Set dynamically based on logged user
+  sidebarVisible: boolean = false;
   isMobile: boolean = false;
-  userName: string | null = null;
   private router = inject(Router);
 
   constructor(private datePipe: DatePipe) {}
 
   ngOnInit() {
     this.today = this.datePipe.transform(new Date(), 'fullDate') ?? '';
+
+    // ✅ Suppose user details are stored in localStorage after login
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user && user.role) {
+      this.role = user.role || 'EMPLOYEE';
+    }
+
     this.checkScreenSize();
   }
 
-  // Detect window resize to set isMobile flag
+  // Detect screen resize
   @HostListener('window:resize', [])
   onWindowResize() {
     this.checkScreenSize();
@@ -37,16 +40,19 @@ export class NavbarComponent {
 
   checkScreenSize() {
     this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) this.sidebarVisible = false; // close on small screens by default
   }
 
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
-  logout() {
-    // 🔒 Add your logout logic here
-    // this.auth.logout();
-    this.router.navigateByUrl('/login');
+  goToProfile() {
+    this.router.navigateByUrl('/my-profile');  // 👈 Redirect to My Profile UI
   }
 
+  logout() {
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
+  }
 }

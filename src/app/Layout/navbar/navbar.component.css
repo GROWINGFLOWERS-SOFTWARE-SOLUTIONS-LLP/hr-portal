@@ -1,5 +1,9 @@
-/* Header */
+/* ---------- Header (Fixed Topbar) ---------- */
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   background-color: #007ad9;
   color: white;
   height: 72px;
@@ -7,66 +11,77 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
-.logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background:white;
-  
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .company-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-left: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
 }
 
-.menu-toggle {
+.sidebar-toggle {
   font-size: 1.5rem;
+  cursor: pointer;
   color: white;
 }
-@media screen and (max-width: 768px) {
-  .company-name {
-    font-size: 1.4rem;
-  }
-}
 
-/* Layout */
-.layout {
+/* Right section */
+.header-right {
   display: flex;
-  height: calc(100vh - 72px); /* full height minus header */
-  overflow: hidden;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-/* Sidebar */
+.welcome-text {
+  font-weight: bold;
+  color: #fff;
+}
+
+.date-text {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+.user-icon {
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.user-icon:hover {
+  transform: scale(1.2);
+}
+
+/* ---------- Sidebar ---------- */
 .sidebar {
-  width: 250px;
-  background-color: #fff;
-  padding: 1rem;
-  box-shadow: 2px 0 5px rgb(0 0 0 / 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s ease;
-  height: 100%;
-  position: relative;
-  z-index: 10;
-}
-
-.sidebar-hidden {
-  transform: translateX(-100%);
-  position: absolute;
-  top: 72px;
-  left: 0;
+  position: fixed;
+  top: 72px; /* below header */
+  left: -240px;
+  width: 240px;
   height: calc(100vh - 72px);
-  box-shadow: 2px 0 5px rgb(0 0 0 / 0.3);
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding-top: 1rem;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 999;
 }
 
-/* Navigation Links */
-.nav-links {
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-content {
   display: flex;
   flex-direction: column;
 }
@@ -74,62 +89,49 @@
 .nav-link {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
-  color: #333;
+  gap: 10px;
+  padding: 12px 20px;
   text-decoration: none;
-  font-weight: 500;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: #333;
   font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
+  border-left: 4px solid transparent;
 }
 
-.nav-link i {
-  margin-right: 0.75rem;
-  font-size: 1.2rem;
-  width: 1.5rem;
-  text-align: center;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  background-color: #e3f2fd;
+.nav-link:hover {
+  background-color: #e6f2ff;
   color: #007ad9;
+  border-left: 4px solid #007ad9;
 }
 
-/* Logout Button */
-.logout-button {
+.logout-link {
   margin-top: auto;
-  padding-top: 1rem;
+  color: red;
 }
 
-.logout-button .p-button {
-  width: 100%;
-  justify-content: flex-start;
-  font-weight: 600;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
-  background-color: #f4f6f9;
-  overflow-y: auto;
+/* ---------- Content Area ---------- */
+.content {
+  margin-top: 72px; /* push below fixed header */
   padding: 1.5rem;
-  min-height: 0; /* For flex scroll to work properly */
+  min-height: calc(100vh - 72px);
+  background-color: #f4f6f9;
+  transition: margin-left 0.3s ease;
 }
 
-/* Responsive */
+.content.sidebar-open {
+  margin-left: 240px;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 768px) {
-  .sidebar {
-    position: absolute;
-    top: 72px;
-    left: 0;
-    height: calc(100vh - 72px);
-    box-shadow: 2px 0 8px rgb(0 0 0 / 0.25);
-    background-color: white;
+  .header-right {
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
   }
 
-  .menu-toggle {
-    display: inline-block;
+  .content.sidebar-open {
+    margin-left: 0;
   }
 }
